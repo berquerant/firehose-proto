@@ -1,0 +1,8 @@
+lint:
+  directories:
+    exclude:
+      - docker
+      - bin
+  rules_option:
+    indent:
+      not_insert_newline: true

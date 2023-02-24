@@ -1,0 +1,3 @@
+[submodule "docker/firehose-docker-protobuf"]
+	path = docker/firehose-docker-protobuf
+	url = https://github.com/berquerant/firehose-docker-protobuf.git

@@ -1,0 +1,19 @@
+syntax = "proto3";
+package ingress.gateway;
+import "google/api/annotations.proto";
+option go_package = "github.com/berquerant/firebase-proto/ingress";
+
+message GetMessageRequest {}
+
+message GetMessageResponse {
+  bytes body = 1;
+  bytes id   = 2;
+}
+
+service IngressGatewayService {
+  rpc GetMessage(GetMessageRequest) returns (GetMessageResponse) {
+    option (google.api.http) = {
+      get: "/message"
+    };
+  }
+}
