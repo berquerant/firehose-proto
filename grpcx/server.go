@@ -2,8 +2,10 @@ package grpcx
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net"
+	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -13,6 +15,8 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -44,6 +48,40 @@ func WithRequestID() grpc.UnaryServerInterceptor {
 
 func Logger(ctx context.Context) *zap.Logger {
 	return ctxzap.Extract(ctx)
+}
+
+var (
+	ErrNoCredentials = errors.New("NoCredentials")
+)
+
+// NewServerCredentialsFromEnv returns a transport cred from the files specified by env.
+// Returns ErrNoCredentials when FIREHOSE_PROTO_CRED_CERT or FIREHOSE_PROTO_CRED_KEY is unset.
+func NewServerCredentialsFromEnv() (grpc.ServerOption, error) {
+	var (
+		crt = os.Getenv("FIREHOSE_PROTO_CRED_CERT")
+		key = os.Getenv("FIREHOSE_PROTO_CRED_KEY")
+	)
+	if crt != "" && key != "" {
+		cred, err := credentials.NewServerTLSFromFile(crt, key)
+		if err != nil {
+			return nil, err
+		}
+		return grpc.Creds(cred), nil
+	}
+	return nil, ErrNoCredentials
+}
+
+// NewClientCredentialsFromEnv returns a transport cred from the file specified by env.
+// Returns an insecure cred and ErrNoCredentials when FIREHOSE_PROTO_CRED_CERT is unset.
+func NewClientCredentialsFromEnv() (grpc.DialOption, error) {
+	if crt := os.Getenv("FIREHOSE_PROTO_CRED_CERT"); crt != "" {
+		cred, err := credentials.NewClientTLSFromFile(crt, "")
+		if err != nil {
+			return nil, err
+		}
+		return grpc.WithTransportCredentials(cred), nil
+	}
+	return grpc.WithTransportCredentials(insecure.NewCredentials()), ErrNoCredentials
 }
 
 func NewServer(srv *grpc.Server, port int) *Server {
