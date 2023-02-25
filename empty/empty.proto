@@ -1,0 +1,13 @@
+syntax = "proto3";
+package empty.empty;
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+option go_package = "github.com/berquerant/firehose-proto/empty";
+
+service EmptyService {
+  rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/"
+    };
+  }
+}

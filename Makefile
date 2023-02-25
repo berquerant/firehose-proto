@@ -1,3 +1,6 @@
+.PHONY: dev
+dev: lint test
+
 #
 # docker images
 #
@@ -32,3 +35,11 @@ format:
 
 %.pb.go: %.proto
 	@bin/protoc.sh $<
+
+#
+# test
+#
+
+.PHONY: test
+test:
+	go test ./...

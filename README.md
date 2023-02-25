@@ -18,3 +18,9 @@ make example/example.pb.go
 ```
 
 `example/example.pb.go` should belong to package example.
+
+# Test
+
+``` bash
+make dev
+```
