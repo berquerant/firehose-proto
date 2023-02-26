@@ -10,9 +10,11 @@ import (
 	"time"
 
 	"github.com/berquerant/firehose-proto/empty"
+	"github.com/berquerant/firehose-proto/grpcx"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -38,9 +40,28 @@ func TestRun(t *testing.T) {
 		assert.Nil(t, err, "connect to server")
 		defer conn.Close()
 
-		client := empty.NewEmptyServiceClient(conn)
-		_, err = client.Ping(context.TODO(), new(emptypb.Empty))
+		const (
+			requestID = "requestFromTestRun"
+		)
+		var (
+			client = empty.NewEmptyServiceClient(conn)
+			header metadata.MD
+			ctx    = metadata.NewOutgoingContext(
+				context.TODO(),
+				metadata.Pairs(grpcx.ClientRequestIDTag, requestID),
+			)
+		)
+		_, err = client.Ping(ctx, new(emptypb.Empty), grpc.Header(&header))
 		assert.Nil(t, err, "ping")
+
+		clientRequestID, ok := grpcx.ExtractClientRequestIDFromMetadata(header)
+		assert.True(t, ok)
+		assert.Equal(t, requestID, clientRequestID)
+
+		serverRequestID, ok := grpcx.ExtractServerRequestIDFromMetadata(header)
+		assert.True(t, ok)
+		assert.True(t, serverRequestID != "")
+		t.Logf("ServerRequestID: %s", serverRequestID)
 	}()
 
 	assert.Nil(t, runCommand.Process.Signal(os.Interrupt), "sigint")
