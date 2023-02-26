@@ -8,6 +8,8 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap/ctxzap"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	grpchealth "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -16,6 +18,7 @@ func Logger(ctx context.Context) *zap.Logger {
 }
 
 func NewServer(srv *grpc.Server, port int) *Server {
+	grpchealth.RegisterHealthServer(srv, health.NewServer())
 	reflection.Register(srv)
 	return &Server{
 		port: port,
