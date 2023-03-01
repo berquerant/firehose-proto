@@ -3,9 +3,10 @@ module github.com/berquerant/firehose-proto
 go 1.20
 
 require (
+	github.com/berquerant/firehose-test v0.1.0
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.1
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/stretchr/testify v1.8.2
 	go.uber.org/zap v1.24.0
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
@@ -14,9 +15,7 @@ require (
 )
 
 require (
-	github.com/berquerant/firehose-test v0.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
