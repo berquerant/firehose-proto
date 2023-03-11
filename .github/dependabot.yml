@@ -13,3 +13,8 @@ updates:
     ignore: # ignore major update
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
+
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "weekly"
