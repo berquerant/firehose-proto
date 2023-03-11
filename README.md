@@ -24,3 +24,9 @@ make example/example.pb.go
 ``` bash
 make dev
 ```
+
+# Regenerate code
+
+``` bash
+make generate
+```

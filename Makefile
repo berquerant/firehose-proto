@@ -2,6 +2,13 @@
 dev: lint test
 
 #
+# code generation
+#
+
+.PHONY: generate
+generate: gen-proto re-go-generate
+
+#
 # docker images
 #
 
@@ -36,6 +43,10 @@ format:
 %.pb.go: %.proto
 	@bin/protoc.sh $<
 
+.PHONY: gen-proto
+gen-proto:
+	@bin/gen-proto.sh
+
 #
 # test
 #
@@ -47,9 +58,6 @@ test:
 #
 # go generate
 #
-
-.PHONY: generate
-generate: re-go-generate
 
 .PHONY: re-go-generate
 re-go-generate: clean-go-generated go-generate
