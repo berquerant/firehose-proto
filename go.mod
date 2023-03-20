@@ -6,7 +6,7 @@ require (
 	github.com/berquerant/firehose-test v0.1.2
 	github.com/caarlos0/env/v7 v7.0.0
 	github.com/google/uuid v1.3.0
-	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/stretchr/testify v1.8.2
 	go.uber.org/zap v1.24.0
