@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.24.0
 	google.golang.org/genproto v0.0.0-20230223222841-637eb2293923
 	google.golang.org/grpc v1.53.0
